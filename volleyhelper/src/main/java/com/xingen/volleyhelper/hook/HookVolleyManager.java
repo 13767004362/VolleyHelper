@@ -17,15 +17,18 @@ public class HookVolleyManager {
         }
         try {
             Log.i(TAG, " HookVolleyManager init() ");
+
             Class<?> requestQueueClass = requestQueue.getClass();
             Field networkField = requestQueueClass.getDeclaredField("mNetwork");
             networkField.setAccessible(true);
+            //获取到BasicNetwork对象
             Object network = networkField.get(requestQueue);
             //接下来，设置动态代理
             Object networkProxy = Proxy.newProxyInstance(requestQueue.getClass().getClassLoader(), network.getClass().getInterfaces(), new NetWorkHandler(network));
             networkField.set(requestQueue, networkProxy);
             Field mDispatchersField = requestQueueClass.getDeclaredField("mDispatchers");
             mDispatchersField.setAccessible(true);
+            //获取到NetworkDispatcher线程组
             Object[] networkDispatchers = (Object[]) mDispatchersField.get(requestQueue);
             //代理掉网络线程中的network
             for (Object object : networkDispatchers) {

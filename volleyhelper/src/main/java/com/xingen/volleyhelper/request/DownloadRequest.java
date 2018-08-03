@@ -22,7 +22,6 @@ public  class DownloadRequest extends Request<Object> {
     private final DownloadListener downloadListener;
     private final FileProgressListener progressListener;
     private final String downloadUrl, filePath;
-
     public DownloadRequest(String url, String filePath, FileProgressListener progressListener, DownloadListener downloadListener) {
         super(Method.GET, url, downloadListener);
         this.downloadUrl = url;
@@ -31,26 +30,22 @@ public  class DownloadRequest extends Request<Object> {
         this.progressListener = progressListener;
         this.setShouldCache(false);
     }
-
     @Override
     protected Response<Object> parseNetworkResponse(NetworkResponse response) {
         return Response.success(null, null);
     }
-
     @Override
     protected void deliverResponse(Object response) {
         if (downloadListener != null) {
             downloadListener.downloadFinish(this.downloadUrl, this.filePath);
         }
     }
-
     @Override
     public void deliverError(VolleyError error) {
         if (downloadListener != null) {
             downloadListener.downloadError(this.downloadUrl, error);
         }
     }
-
     /**
      * 回调传递进度
      *
@@ -69,7 +64,6 @@ public  class DownloadRequest extends Request<Object> {
             }
         });
     }
-
     public String getFilePath() {
         return filePath;
     }

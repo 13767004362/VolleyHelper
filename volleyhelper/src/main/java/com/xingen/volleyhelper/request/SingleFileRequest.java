@@ -136,7 +136,6 @@ public  class SingleFileRequest<T> extends Request<T> {
     public String getFileName() {
         return filePath != null ? filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length()) : null;
     }
-
     /**
      * 文件内容的头部
      */
@@ -159,7 +158,6 @@ public  class SingleFileRequest<T> extends Request<T> {
             return null;
         }
     }
-
     /**
      * 文件内容的尾部
      */

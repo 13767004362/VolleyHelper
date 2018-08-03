@@ -28,7 +28,7 @@ public class MyHttpStack extends HurlStack {
     @Override
     public HttpResponse executeRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError {
         // Log.i(TAG, " MyHttpStack  executeRequest " + request.getUrl());
-        if (request instanceof SingleFileRequest) {
+        if (request instanceof SingleFileRequest) {//当请求是文件上传的请求，直接从磁盘文件中读取IO，避免转成一个超大的byte[] ，导致内存溢出
             HttpURLConnection connection = this.createConnection(new URL(request.getUrl()));
             int timeoutMs = request.getTimeoutMs();
             connection.setConnectTimeout(timeoutMs);
@@ -44,7 +44,7 @@ public class MyHttpStack extends HurlStack {
             } else {
                 return !hasResponseBody(request.getMethod(), responseCode) ? new HttpResponse(responseCode, convertHeaders(connection.getHeaderFields())) : new HttpResponse(responseCode, convertHeaders(connection.getHeaderFields()), connection.getContentLength(), connection.getResponseCode()==200?connection.getInputStream():connection.getErrorStream());
             }
-        } else {
+        } else {//非文件上传的请求，正常走法
             return super.executeRequest(request, additionalHeaders);
         }
     }

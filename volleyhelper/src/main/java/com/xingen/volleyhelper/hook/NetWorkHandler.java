@@ -22,9 +22,8 @@ import java.net.URL;
  * Author by {xinGen}
  * Date on 2018/8/1 10:51
  */
-public  class NetWorkHandler implements InvocationHandler {
-
-private final  String TAG=NetWorkHandler.class.getSimpleName();
+public class NetWorkHandler implements InvocationHandler {
+    private final String TAG = NetWorkHandler.class.getSimpleName();
     private Object network;
     public NetWorkHandler(Object network) {
         this.network = network;
@@ -35,7 +34,7 @@ private final  String TAG=NetWorkHandler.class.getSimpleName();
         if (method.getName().equals("performRequest")) {
             Object request = args[0];
             //  Log.i(TAG, " NetWorkHandler 代理 " + method.getName());
-            if (request instanceof DownloadRequest) {
+            if (request instanceof DownloadRequest) {//当执行下载任务，就直接IO写入磁盘，不走内存流
                 Log.i(TAG, " NetWorkHandler  处理 DownloadRequest");
                 try {
                     String url = ((DownloadRequest) request).getUrl();
@@ -52,7 +51,7 @@ private final  String TAG=NetWorkHandler.class.getSimpleName();
                     Log.i(TAG, " NetWorkHandler 发生异常 " + e.getMessage());
                     throw new VolleyError(e);
                 }
-            } else {
+            } else {//当其他的Request，正常走法。
                 try {
                     Object result = method.invoke(network, args);
                     return result;
@@ -106,7 +105,6 @@ private final  String TAG=NetWorkHandler.class.getSimpleName();
         outputStream.close();
         return new NetworkResponse(status, new byte[0], null, false);
     }
-
     private static String streamToString(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = null;
         BufferedInputStream bufferedInputStream = null;

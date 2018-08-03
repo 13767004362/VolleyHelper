@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
 
 
 
@@ -25,7 +26,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.google.code.gson:gson:2.2.4'
-    implementation 'com.android.volley:volley:1.1.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.android.volley:volley:1.1.1'
+
 }

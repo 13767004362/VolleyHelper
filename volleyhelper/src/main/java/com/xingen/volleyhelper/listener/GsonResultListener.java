@@ -20,12 +20,10 @@ import java.lang.reflect.Type;
 public  abstract class GsonResultListener<T> implements Response.Listener<T>, Response.ErrorListener {
     private Type type;
     private Gson gson;
-
     public GsonResultListener() {
         this.gson = new Gson();
         this.type = getSuperclassTypeParameter(this.getClass());
     }
-
     public Response<T> parseResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
@@ -37,12 +35,10 @@ public  abstract class GsonResultListener<T> implements Response.Listener<T>, Re
             return Response.error(new ParseError(e));
         }
     }
-
     @Override
     public void onResponse(T response) {
         this.success(response);
     }
-
     @Override
     public void onErrorResponse(VolleyError error) {
         this.error(error);
@@ -58,7 +54,6 @@ public  abstract class GsonResultListener<T> implements Response.Listener<T>, Re
         ParameterizedType parameter = (ParameterizedType) superclass;
         return $Gson$Types.canonicalize(parameter.getActualTypeArguments()[0]);
     }
-
     /**
      * 解析结果
      *

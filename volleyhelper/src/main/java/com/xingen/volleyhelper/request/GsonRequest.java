@@ -24,43 +24,35 @@ public  class GsonRequest<T> extends Request<T> {
     private Map<String, String> headers;
     private final GsonResultListener<T> resultListener;
     private final String body;
-
     public GsonRequest(String url, GsonResultListener<T> resultListener) {
         this(Method.GET, url, (String) null, resultListener);
     }
-
     public GsonRequest(String url, Object body, GsonResultListener<T> resultListener) {
         this(Method.POST, url, GsonUtils.toJson(body), resultListener);
     }
-
     public GsonRequest(String url, JSONObject body, GsonResultListener<T> resultListener) {
         this(Method.POST, url, body.toString(), resultListener);
     }
-
     public GsonRequest(int method, String url, String body, GsonResultListener<T> resultListener) {
         super(method, url, resultListener);
         this.headers = new HashMap<>();
         this.body = body;
         this.resultListener = resultListener;
     }
-
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         return this.resultListener.parseResponse(response);
     }
-
     @Override
     protected void deliverResponse(T response) {
         this.resultListener.onResponse(response);
     }
-
     public Map<String, String> setHeader(String key, String content) {
         if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(content)) {
             headers.put(key, content);
         }
         return headers;
     }
-
     @Override
     public Map<String, String> getHeaders() {
         return headers;
