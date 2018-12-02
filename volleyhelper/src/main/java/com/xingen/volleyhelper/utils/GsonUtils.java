@@ -79,7 +79,6 @@ public  class GsonUtils {
     }
 
     /**
-     * 转成List<T>的数据
      *
      * @param gson
      * @param content
@@ -99,7 +98,6 @@ public  class GsonUtils {
     }
 
     /**
-     * 转成Map<String，T>的数据
      *
      * @param gson
      * @param content
